@@ -1,30 +1,35 @@
-import { Component } from "react";
+import React, { Component } from 'react';
 
 export default class Modal extends Component {
-    handleEscClick = evt => {
-        if (evt.code === 'Escape') {
-            this.props.hideModal()
-        }
+  handleEscClick = evt => {
+    if (evt.code === 'Escape') {
+      this.props.hideModal();
     }
+  };
 
-    componentDidMount() {
-		document.addEventListener('keydown', this.handleEscClick)
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener('keydown', this.handleEscClick)
+  handleOverlayClick = evt => {
+    if (evt.target.classList.contains('Overlay')) {
+      this.props.hideModal();
     }
-    
-    render() {    
-        const {largeImageURL, tags} = this.props.selectedHit;
-                
-        return (
-            <div className="Overlay">
-                <div className="Modal">
-                    <img src={largeImageURL} alt={tags} />
-                </div>
-            </div>
-        )
-    }
+  };
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleEscClick);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleEscClick);
+  }
+
+  render() {
+    const { largeImageURL, tags } = this.props.selectedHit;
+
+    return (
+      <div className="Overlay" onClick={this.handleOverlayClick}>
+        <div className="Modal">
+          <img src={largeImageURL} alt={tags} />
+        </div>
+      </div>
+    );
+  }
 }
